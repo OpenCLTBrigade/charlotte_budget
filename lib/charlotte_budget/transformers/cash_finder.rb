@@ -10,6 +10,8 @@ module CharlotteBudget
     
     def process(row)
       find_cash(row)
+      logger.debug "[#{row[:file]}][#{row[:fund]}][#{row[:year]}]"
+      logger.debug "Found #{row[:dollar_amount]} for #{row[:line_item]}"
       row if row[:dollar_amount]
     end
     

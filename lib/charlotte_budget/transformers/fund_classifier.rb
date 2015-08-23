@@ -14,6 +14,11 @@ module CharlotteBudget
       row[:fund] = fund_lookup(fund_code(row[:department_code]))
       if general_fund?(row)
         row[:department] = dept_lookup(dept_code(row[:department_code]))
+        if row[:department] == "Unknown"
+          logger.warn "Unknown department"
+          logger.warn row[:row]
+        end
+        row[:general_fund] = true
       else
         row[:fund] = dept_lookup(dept_code(row[:department_code]))
       end
@@ -22,7 +27,7 @@ module CharlotteBudget
         
     def fund_lookup(code)
       case code
-      when "1000"
+      when "1000", "1001"
         "General Fund"
       else
         "Fund #{code}"
@@ -51,6 +56,8 @@ module CharlotteBudget
       	"Human Resources"
       when "18"
       	"Innovation & Technology"
+      when "19"
+        "Department 19"
       when "30"
       	"Charlotte Mecklenburg Police"
       when "31"

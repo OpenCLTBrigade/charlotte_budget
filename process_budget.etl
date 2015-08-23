@@ -18,11 +18,7 @@ transform CharlotteBudget::RowCounter
 transform CharlotteBudget::CashFinder, 8, 10
 transform CharlotteBudget::CashCounter
 
-transform do |row|
-  logger.debug row
-  row
-end
-
 post_process do
   CharlotteBudget::RowCounter.report
+  CharlotteBudget::CashCounter.report
 end

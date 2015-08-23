@@ -14,8 +14,8 @@ module CharlotteBudget
       
       def report
         logger.info("Thank you for processing the #{years} City of Charlotte budget!")
-        logger.debug(year_counts.inspect)
-        logger.debug(file_counts.inspect)
+        total_rows = year_counts.inject(0){|sum, elt| sum+=elt.last}
+        logger.info("I processed #{total_rows} rows from #{year_counts.count} years and #{file_counts.count} files of data.")
       end
       
       def years
