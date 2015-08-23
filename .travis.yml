@@ -1,4 +1,11 @@
 language: ruby
 rvm:
   - 2.2.2
-before_install: gem install bundler -v 1.10.6
+  - ruby-head
+matrix:
+  allow_failures:
+    - rvm: ruby-head
+script:
+  - bundle exec rake
+sudo: false
+cache: bundler
