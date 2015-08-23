@@ -2,13 +2,15 @@ require 'csv'
 
 # The most fundamental level of processing
 class BudgetCsvSource
-  def initialize(input_file)
+  def initialize(input_file, year)
     @csv = CSV.open(input_file, headers: false)
+    @year = year
+    @filename = input_file.split("/").last
   end
 
   def each
-    @csv.each do |row|
-      yield(row)
+    @csv.each_with_index do |row, i|
+      yield(year: @year, file: @filename, row_index: i+1, row: row)
     end
     @csv.close
   end

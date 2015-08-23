@@ -1,8 +1,16 @@
 require 'charlotte_budget'
 require 'charlotte_budget/loggers/kiba_logger'
 
-Dir['processing/**/*.csv'].each do |file|
-  source BudgetCsvSource, file
+pre_process do
+  # You might configure a different logger here, e.g.
+end
+
+Dir['processing/2015/*.csv'].each do |file|
+  source BudgetCsvSource, file, 2015
+end
+
+Dir['processing/2016/*.csv'].each do |file|
+  source BudgetCsvSource, file, 2016
 end
 
 transform do |row|
