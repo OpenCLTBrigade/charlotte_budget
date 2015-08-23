@@ -1,0 +1,11 @@
+require 'charlotte_budget'
+require 'charlotte_budget/loggers/kiba_logger'
+
+Dir['processing/**/*.csv'].each do |file|
+  source BudgetCsvSource, file
+end
+
+transform do |row|
+  logger.info row
+  row
+end
