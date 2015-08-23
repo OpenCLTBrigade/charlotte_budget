@@ -2,7 +2,9 @@
 
 This gem processes City of Charlotte budget data, and produces a JSON file suitable for into budget display applications such as [Government Budget Explorer](https://github.com/DemocracyApps/GBE) or [Visual-Town-Budget](https://github.com/goinvo/Visual-Town-Budget).
 
-We've observed from practice that knowledge, analysis, and processing of the dataset is independent enough from display that we'd like to create institutional knowledge about how to process this information.  Our own inputs may vary from year to year (as they did from 2015 to 2016), so we create this gem to start with the benefits of antiquity each time.
+We've observed from practice that knowledge, analysis, and processing of the dataset is independent enough from display that we'd like to create institutional knowledge about how to process this information.  Our own inputs may vary from year to year (as they did from 2015 to 2016), so we create this gem to start with the benefits of antiquity each time.  A durable, consistent, documentable in-memory model allows us to serialize to any number of formats, in addition to providing for flexible ad-hoc processing as well.
+
+[![Build Status](https://travis-ci.org/CodeForCharlotte/charlotte_budget.svg?branch=master)](https://travis-ci.org/CodeForCharlotte/charlotte_budget)
 
 
 ## Installation
