@@ -13,10 +13,11 @@ Dir['processing/2016/*.csv'].each do |file|
 end
 
 transform CharlotteBudget::DepartmentCodeReader, 7
+transform CharlotteBudget::FundClassifier
 transform CharlotteBudget::RowCounter
 
 transform do |row|
-  logger.debug row[:department_code]
+  logger.debug row
   row
 end
 
