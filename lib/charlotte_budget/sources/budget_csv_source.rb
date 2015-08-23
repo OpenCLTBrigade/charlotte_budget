@@ -1,6 +1,7 @@
 require 'csv'
 
-# The most fundamental level of processing
+# The most fundamental level of processing.  
+# Ensures origin file, year, and row info is available throughout processing.
 class BudgetCsvSource
   def initialize(input_file, year)
     @csv = CSV.open(input_file, headers: false)

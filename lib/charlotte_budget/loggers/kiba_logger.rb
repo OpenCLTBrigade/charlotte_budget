@@ -3,15 +3,20 @@ require 'logger'
 module CharlotteBudget
   module KibaLogger
     
+    class << self
+      attr_accessor :logger
+      def logger
+        @logger ||= Logger.new(STDOUT)
+      end
+    end
     
     def self.included(klass)
-      puts "included in #{klass.to_s}"
       class << klass
-        attr_accessor :logger
         def logger
-          @logger ||= Logger.new(STDOUT)
+          ::CharlotteBudget::KibaLogger.logger
         end
       end
+      
     end
     
     def logger

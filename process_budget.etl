@@ -1,8 +1,7 @@
 require 'charlotte_budget'
-require 'charlotte_budget/loggers/kiba_logger'
 
 pre_process do
-  # You might configure a different logger here, e.g.
+  logger.level = Logger::INFO
 end
 
 Dir['processing/2015/*.csv'].each do |file|
@@ -13,7 +12,14 @@ Dir['processing/2016/*.csv'].each do |file|
   source BudgetCsvSource, file, 2016
 end
 
+transform CharlotteBudget::DepartmentCodeReader, 7
+transform CharlotteBudget::RowCounter
+
 transform do |row|
-  logger.info row
+  logger.debug row[:department_code]
   row
+end
+
+post_process do
+  CharlotteBudget::RowCounter.report
 end
