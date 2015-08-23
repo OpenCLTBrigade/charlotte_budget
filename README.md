@@ -1,8 +1,9 @@
 # CharlotteBudget
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/charlotte_budget`. To experiment with that code, run `bin/console` for an interactive prompt.
+This gem processes City of Charlotte budget data, and produces a JSON file suitable for into budget display applications such as [Government Budget Explorer](https://github.com/DemocracyApps/GBE) or [Visual-Town-Budget](https://github.com/goinvo/Visual-Town-Budget).
 
-TODO: Delete this and the text above, and describe your gem
+We've observed from practice that knowledge, analysis, and processing of the dataset is independent enough from display that we'd like to create institutional knowledge about how to process this information.  Our own inputs may vary from year to year (as they did from 2015 to 2016), so we create this gem to start with the benefits of antiquity each time.
+
 
 ## Installation
 
@@ -22,7 +23,9 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Processing is exposed in the default rake task.
+
+Run `bin/console` for an interactive prompt that allows you to manually execute intermediate analysis and processing.
 
 ## Development
 
