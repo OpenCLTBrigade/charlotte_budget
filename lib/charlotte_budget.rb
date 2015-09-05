@@ -13,6 +13,7 @@ require 'charlotte_budget/transformers/cash_finder'
 require 'charlotte_budget/transformers/cash_counter'
 
 require 'charlotte_budget/serializers/visual_town_budget_serializer'
+require 'charlotte_budget/serializers/community_budget_explorer_serializer'
 
 module CharlotteBudget
   # Your code goes here...

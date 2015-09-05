@@ -14,9 +14,10 @@ transform CharlotteBudget::RowCounter
 transform CharlotteBudget::CashFinder, 1, 3
 transform CharlotteBudget::CashCounter
 #transform CharlotteBudget::VisualTownBudgetSerializer
+transform CharlotteBudget::CommunityBudgetExplorerSerializer
 
 post_process do
   CharlotteBudget::RowCounter.report
   CharlotteBudget::CashCounter.report
-  #CharlotteBudget::VisualTownBudgetSerializer.write('output/expenses.json')
+  CharlotteBudget::CommunityBudgetExplorerSerializer.write('output/expenses.csv')
 end
