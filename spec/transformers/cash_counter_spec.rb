@@ -5,7 +5,9 @@ describe CharlotteBudget::CashCounter do
   let(:rows){ [
     {fund: "General Fund", line_item: "Test Item", year: 2015, dollar_amount: 10},
     {fund: "General Fund", line_item: "Test Item 2", year: 2015, dollar_amount: 10},
-    {fund: "General Fund", line_item: "Test Item 2", year: 2016, dollar_amount: 10}    
+    {fund: "General Fund", line_item: "Test Item 2", year: 2015, dollar_amount: 10},
+    {fund: "General Fund", line_item: "Test Item 3", year: 2015, dollar_amount: -5},
+    {fund: "General Fund", line_item: "Test Item 2", year: 2016, dollar_amount: 10}
   ]}
   
   subject{ CharlotteBudget::CashCounter }
@@ -23,7 +25,7 @@ describe CharlotteBudget::CashCounter do
   end
   
   it "should aggregate line items under fund and year" do
-    expect( subject.subtotal("General Fund", 2015) ).to eq(20)
+    expect( subject.subtotal("General Fund", 2015) ).to eq(25)
     expect( subject.subtotal("General Fund", 2016) ).to eq(10)
   end
   
