@@ -29,11 +29,17 @@ module CharlotteBudget
     
       def write(path)
         CSV.open(path, 'wb') { |csv|
+          header_row = []
+          header_row[0] = "Type"
+          header_row[1] = "Amount"
+          header_row[2] = "Fund"
+          header_row[3] = "Department"
+          header_row[4] = "Account Name"
           general_fund.each do |dept, accts|
             logger.debug dept.inspect
             accts.each do |acct, val|
               row = []
-              row[0] = "EXPENSES"
+              row[0] = "EXPENSE"
               row[1] = val
               row[2] = "General Fund"
               row[3] = dept
@@ -45,10 +51,10 @@ module CharlotteBudget
             logger.debug fund.inspect
             accts.each do |acct, val|
               row = []
-              row[0] = "EXPENSES"
+              row[0] = "EXPENSE"
               row[1] = val
               row[2] = fund
-              row[3] = nil
+              row[3] = fund
               row[4] = acct
               csv << row
             end

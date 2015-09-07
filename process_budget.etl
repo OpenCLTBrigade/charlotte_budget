@@ -19,5 +19,5 @@ transform CharlotteBudget::CommunityBudgetExplorerSerializer
 post_process do
   CharlotteBudget::RowCounter.report
   CharlotteBudget::CashCounter.report
-  CharlotteBudget::CommunityBudgetExplorerSerializer.write('output/expenses.csv')
+  CharlotteBudget::CommunityBudgetExplorerSerializer.write('output/2016_budget.csv')
 end

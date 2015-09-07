@@ -8,19 +8,17 @@ Dir['processing/2015/*.csv'].each do |file|
   source BudgetCsvSource, file, 2015
 end
 
-Dir['processing/FY2016/*.csv'].each do |file|
-  source BudgetCsvSource, file, 2016
-end
-
 transform CharlotteBudget::DepartmentCodeReader, 7
 transform CharlotteBudget::FundClassifier
 transform CharlotteBudget::RowCounter
 transform CharlotteBudget::CashFinder, 8, 10
 transform CharlotteBudget::CashCounter
 #transform CharlotteBudget::VisualTownBudgetSerializer
+transform CharlotteBudget::CommunityBudgetExplorerSerializer
 
 post_process do
   CharlotteBudget::RowCounter.report
   CharlotteBudget::CashCounter.report
   #CharlotteBudget::VisualTownBudgetSerializer.write('output/expenses.json')
+  CharlotteBudget::CommunityBudgetExplorerSerializer.write('output/2015_budget.csv')
 end
