@@ -4,6 +4,10 @@ require 'digest'
 module CharlotteBudget
   class VisualTownBudgetSerializer < Transformer
     class Container
+      
+      def logger
+        CharlotteBudget::KibaLogger.logger
+      end
 
       attr_accessor :key, :containers
     
@@ -38,16 +42,18 @@ module CharlotteBudget
       end
     
       def record(attrs)
-        li = container_for(attrs[:line_item])
-        if li.nil?
-          li = LineItem.new(attrs[:line_item])
-          containers << li
+        c = container_for(attrs[:line_item])
+        if c.nil?
+          c = if attrs[:general_fund] && key == "General Fund"
+            logger.debug "New container for #{attrs[:department]}"
+            Container.new(attrs[:department])
+          else
+            logger.debug "New line item for #{attrs[:line_item]}"            
+            LineItem.new(attrs[:line_item])
+          end
+          containers << c
         end
-        ae = AnnualExpense.new
-        ae.val = attrs[:dollar_amount]
-        ae.year = attrs[:year]
-        li.annual_expenses << ae
-        li
+        c.record(attrs) 
       end
     
       def annual_expenses
@@ -72,6 +78,11 @@ module CharlotteBudget
     end
 
     class LineItem
+      
+      def logger
+        CharlotteBudget::KibaLogger.logger
+      end
+      
       attr_accessor :key, :annual_expenses
       
       def initialize(name)
@@ -111,6 +122,21 @@ module CharlotteBudget
           aes << ae
         end
         aes
+      end
+      
+      def record(attrs)
+        logger.info("Recording #{attrs[:dollar_amount]} for #{attrs[:year]} in #{self.key}")
+        ae = annual_expenses.select{ |ae| ae.year == attrs[:year] }.first
+        if ae.nil?
+          logger.debug("New expense for #{attrs[:year]}")
+          ae = AnnualExpense.new
+          ae.val = attrs[:dollar_amount]
+          ae.year = attrs[:year]
+          self.annual_expenses << ae
+        else
+          logger.debug("Found expense for #{attrs[:year]}")          
+          ae.val += attrs[:dollar_amount]
+        end
       end
       
       def to_s

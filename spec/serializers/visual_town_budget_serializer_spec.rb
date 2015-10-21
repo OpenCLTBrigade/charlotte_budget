@@ -85,7 +85,7 @@ describe CharlotteBudget::VisualTownBudgetSerializer do
         it "should reflect single year submission" do
           subject.process(row_2015)
           aes = clazz.expenses.annual_expenses
-          expect(aes.length).to eq(1)
+          expect(aes.length).to eq(2)
           e2015 = aes.first
           expect(e2015.year).to eq(2015)
           expect(e2015.val).to eq(10)
@@ -179,10 +179,13 @@ describe CharlotteBudget::VisualTownBudgetSerializer do
         it "should reflect single year submission" do
           subject.process(row_2015)
           aes = clazz.expenses.annual_expenses
-          expect(aes.length).to eq(1)
-          e2015 = aes.first
-          expect(e2015.year).to eq(2015)
+          expect(aes.length).to eq(2)
+          e2015 = aes.select{ |ae| ae.year == 2015 }.first
+          e2016 = aes.select{ |ae| ae.year == 2016 }.first
+          expect(e2015).not_to be_nil
+          expect(e2016).not_to be_nil
           expect(e2015.val).to eq(10)
+          expect(e2016.val).to eq(0)
         end
     
         it "should reflect one 2016 submission" do

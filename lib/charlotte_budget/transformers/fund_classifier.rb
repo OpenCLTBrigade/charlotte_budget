@@ -57,7 +57,7 @@ module CharlotteBudget
       when "18"
       	"Innovation & Technology"
       when "19"
-        "Department 19"
+        "Management & Financial Services"
       when "30"
       	"Charlotte Mecklenburg Police"
       when "31"
