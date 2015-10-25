@@ -6,6 +6,7 @@ RSpec::Core::RakeTask.new(:spec)
 
 task :default => :spec
 
+desc "Download budget data from the open data portal"
 task :download do
   OpenDataPortalDownloader.perform
 end
