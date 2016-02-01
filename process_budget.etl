@@ -6,18 +6,18 @@ end
 
 Dir['processing/FY2016/*.csv'].each do |file|
   source BudgetCsvSource, file, 2016
+  transform CharlotteBudget::DepartmentCodeReader, 0
+  transform CharlotteBudget::CashFinder, 1, 3
 end
 
-transform CharlotteBudget::DepartmentCodeReader, 0
 transform CharlotteBudget::FundClassifier
 transform CharlotteBudget::RowCounter
-transform CharlotteBudget::CashFinder, 1, 3
 transform CharlotteBudget::CashCounter
-#transform CharlotteBudget::VisualTownBudgetSerializer
-transform CharlotteBudget::CommunityBudgetExplorerSerializer
+transform CharlotteBudget::VisualTownBudgetSerializer
+#transform CharlotteBudget::CommunityBudgetExplorerSerializer
 
 post_process do
   CharlotteBudget::RowCounter.report
   CharlotteBudget::CashCounter.report
-  CharlotteBudget::CommunityBudgetExplorerSerializer.write('output/2016_budget.csv')
+  CharlotteBudget::VisualTownBudgetSerializer.write('output/expenses.json')
 end

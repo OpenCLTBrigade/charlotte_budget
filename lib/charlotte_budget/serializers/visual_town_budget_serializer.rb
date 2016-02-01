@@ -4,18 +4,18 @@ require 'digest'
 module CharlotteBudget
   class VisualTownBudgetSerializer < Transformer
     class Container
-      
+
       def logger
         CharlotteBudget::KibaLogger.logger
       end
 
       attr_accessor :key, :containers
-    
+
       def initialize(attrs={})
         @key = attrs[:key]
         @containers = attrs[:containers] || []
       end
-      
+
       def hashify
         md5 = Digest::MD5.new
       	md5.update(self.key)
@@ -32,15 +32,15 @@ module CharlotteBudget
           values: annual_expenses.collect{ |c| c.to_hash }
         }
       end
-    
+
       def tracked?(val)
         !container_for(val).nil?
       end
-    
+
       def container_for(val)
         containers.select{ |c| c.key == val }.first
       end
-    
+
       def record(attrs)
         c = container_for(attrs[:line_item])
         if c.nil?
@@ -48,14 +48,14 @@ module CharlotteBudget
             logger.debug "New container for #{attrs[:department]}"
             Container.new(attrs[:department])
           else
-            logger.debug "New line item for #{attrs[:line_item]}"            
+            logger.debug "New line item for #{attrs[:line_item]}"
             LineItem.new(attrs[:line_item])
           end
           containers << c
         end
-        c.record(attrs) 
+        c.record(attrs)
       end
-    
+
       def annual_expenses
         raw_expenses = containers.collect{ |c| c.annual_expenses }.flatten
         # Just so happens VTB viz requires spanning years.
@@ -67,35 +67,35 @@ module CharlotteBudget
           ae
         end
       end
-      
+
       def covered_years
-        [2015, 2016]
+        [2016]
       end
-      
+
       def to_s
         "[#{key}] [#{containers.collect{ |c| c.to_s}}]"
       end
     end
 
     class LineItem
-      
+
       def logger
         CharlotteBudget::KibaLogger.logger
       end
-      
+
       attr_accessor :key, :annual_expenses
-      
+
       def initialize(name)
         @key = name
         @annual_expenses = []
       end
-      
+
       def hashify
         md5 = Digest::MD5.new
       	md5.update(self.key)
       	md5.hexdigest()
-      end      
-    
+      end
+
       def to_hash
         { descr: nil,
           src: nil,
@@ -106,11 +106,11 @@ module CharlotteBudget
           values: spanning_annual_expenses.collect{ |v| v.to_hash }
         }
       end
-      
+
       def covered_years
-        [2015, 2016]
+        [2016]
       end
-      
+
       def spanning_annual_expenses
         aes = annual_expenses
         years = aes.collect{ |ae| ae.year }
@@ -123,7 +123,7 @@ module CharlotteBudget
         end
         aes
       end
-      
+
       def record(attrs)
         logger.info("Recording #{attrs[:dollar_amount]} for #{attrs[:year]} in #{self.key}")
         ae = annual_expenses.select{ |ae| ae.year == attrs[:year] }.first
@@ -134,15 +134,15 @@ module CharlotteBudget
           ae.year = attrs[:year]
           self.annual_expenses << ae
         else
-          logger.debug("Found expense for #{attrs[:year]}")          
+          logger.debug("Found expense for #{attrs[:year]}")
           ae.val += attrs[:dollar_amount]
         end
       end
-      
+
       def to_s
         "{#{key}} #{annual_expenses.join(",")}"
       end
-    
+
     end
     class AnnualExpense
       attr_accessor :val, :year
@@ -156,7 +156,7 @@ module CharlotteBudget
         "#{val} in #{year}"
       end
     end
-  
+
     class << self
       def expenses
         @expenses ||= Container.new(key: "Expenses")
@@ -173,7 +173,7 @@ module CharlotteBudget
         @expenses = Container.new(key: "Expenses")
       end
     end
-  
+
     def process(row)
       expenses = self.class.expenses
       track(row[:fund]) if !expenses.tracked?(row[:fund])
@@ -196,14 +196,14 @@ module CharlotteBudget
         fund.record(row)
       end
     end
-  
+
     def track(fund)
       self.class.expenses.containers << new_container(fund)
     end
-  
+
     def new_container(fund)
       Container.new(key: fund)
     end
-  
+
   end
 end

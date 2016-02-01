@@ -1,11 +1,11 @@
 module CharlotteBudget
   class FundClassifier < Transformer
-    
+
     def process(row)
       classify(row)
       row if row[:fund]
     end
-    
+
     def classify(row)
       # General Fund is split into departments
       # Some departments are self-funded and are split out
@@ -24,7 +24,7 @@ module CharlotteBudget
       end
       row
     end
-        
+
     def fund_lookup(code)
       case code
       when "1000", "1001"
@@ -77,26 +77,28 @@ module CharlotteBudget
       when "70"
       	"Charlotte Water (formerly Charlotte Mecklenburg Utility Department)"
       when "80"
-      	"Engineering & Property Management"
+      	# "Engineering & Property Management"
+        # Per Karen email request Q12016
+        "Storm Water Services"
       else
         "Unknown"
       end
     end
-    
+
     private
-    
+
     def general_fund?(row)
       row[:fund] == "General Fund"
     end
-    
+
     def fund_code(code)
       code.split("-")[0]
     end
-    
+
     def dept_code(code)
       code.split("-")[1]
     end
-    
-    
+
+
   end
 end
